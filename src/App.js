@@ -4,36 +4,40 @@ import Navigation from './components/Navigation/Navigation'
 import Logo from './components/Logo/Logo'
 import Rank from './components/Rank/Rank'
 import ImageForm from './components/ImageForm/ImageForm'
+import Output from './components/Output/Output'
+import ParticleSystem from './components/ParticleSystem/ParticleSystem'
 import './App.css'
-import Particles from 'react-particles-js'
+import Clarifai from 'clarifai'
 
-const particles = {
-                    particles: {
-                      number: {
-                        value: 40,
-                        density:{
-                          enable: true,
-                          value_area: 600
-                        }
-                      },
-                    },
-                  }
+const app = new Clarifai.App({
+ apiKey: '39ed9d27a99f4025ba8182b668b0811c'
+});
+
 
 class App extends Component {
   constructor(){
     super();
     this.state = {
       input: '',
+      imgURL: '',
     }
-  }
-
-  onBtnClick = () =>{
-    console.log(this.state.input)
   }
 
   onInputChange = (event) => {
     this.setState({input: event.target.value})
-  }
+  };
+
+  onBtnClick = () =>{
+    this.setState({imgURL: this.state.input}) 
+    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
+    function(response) {
+        console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
+    },
+    function(err) {
+      
+    }
+    );
+  };
 
   render() {
     return (
@@ -46,8 +50,8 @@ class App extends Component {
 
         <Rank />
         <ImageForm onBtnClick={this.onBtnClick} onInputChange={this.onInputChange} />
-
-        <Particles params={particles} className="particles" />
+        <Output imgURL={this.state.imgURL} />
+        <ParticleSystem />
 
       </div>
     );
