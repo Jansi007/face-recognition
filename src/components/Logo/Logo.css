@@ -1,0 +1,17 @@
+.Tilt{
+	background-color: #333333;
+	color: #ffffff;
+	border-radius: 1em;
+	font-size: 5em;
+	padding-bottom: .1em;
+}
+
+.Tilt:hover{
+	background-color: #3399ff;
+	box-shadow: 0 0 .4em black;
+}
+
+.logoText{
+	text-shadow: 0 0 .3em black;
+	cursor: default;
+}

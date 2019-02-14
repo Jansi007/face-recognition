@@ -1,0 +1,36 @@
+.input{
+	height: 3em;
+	width: 30em;
+	padding: 1em;
+	border-top-left-radius: 3em;
+	border-bottom-left-radius: 3em;
+	border: none;
+	outline: none;
+	background-color: #ffffffaa;
+}
+
+.btn{
+	height: 2.55em;
+	width: 8em;
+	border-top-right-radius: 3em;
+	border-bottom-right-radius: 3em;
+	border: none;
+	background-color: #555555aa;
+	outline: none;
+	font-size: 1.2em;
+	color: white;
+
+}
+
+.btn:hover{
+	background-color: #3399ffaa;
+}
+
+.con{
+	width: 40em;
+	transition: .4s
+}
+
+.con:hover{
+	transform: scale(1.05);
+}
