@@ -20,24 +20,40 @@ class App extends Component {
     this.state = {
       input: '',
       imgURL: '',
+      boxData: {}
     }
+  }
+
+  calcFaceLoc = (input) => {
+    const rawData = input.outputs[0].data.regions[0].region_info.bounding_box
+    const rawImg = document.getElementById('rawImg')
+    const height = Number(rawImg.height)
+    const width = Number(rawImg.width)
+
+    console.log(rawData)
+
+    return{
+      botRow: height - (rawData.bottom_row * height),
+      leftCol: width * rawData.left_col,
+      rightCol: width - (rawData.right_col * width),
+      topRow: height * rawData.top_row
+    }    
+  }
+
+  displayFaceBox = (boxData) => {
+    console.log(boxData)
+    this.setState({boxData: boxData})
   }
 
   onInputChange = (event) => {
     this.setState({input: event.target.value})
-  };
+  }
 
   onBtnClick = () =>{
     this.setState({imgURL: this.state.input}) 
-    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input).then(
-    function(response) {
-        console.log(response.outputs[0].data.regions[0].region_info.bounding_box)
-    },
-    function(err) {
-      
-    }
-    );
-  };
+    app.models.predict(Clarifai.FACE_DETECT_MODEL, this.state.input)
+    .then(response => this.displayFaceBox(this.calcFaceLoc(response)));
+  }
 
   render() {
     return (
@@ -50,7 +66,7 @@ class App extends Component {
 
         <Rank />
         <ImageForm onBtnClick={this.onBtnClick} onInputChange={this.onInputChange} />
-        <Output imgURL={this.state.imgURL} />
+        <Output imgURL={this.state.imgURL} boxData={this.state.boxData} />
         <ParticleSystem />
 
       </div>
