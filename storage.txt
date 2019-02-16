@@ -1,0 +1,3 @@
+<div className="bounding-box" style={{top: item.dataProcesssed[0].topRow,right: item.dataProcesssed[0].rightCol,bottom: item.dataProcesssed[0].botRow,left: item.dataProcesssed[0].leftCol}}></div>
+
+ className="bounding_box" style={{top: item[i].topRow, right: item[i].rightCol, bottom: item[i].botRow, left: item[i].leftCol}} 

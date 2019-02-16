@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { Component } from 'react'
 import './Output.css'
 
-const Output = ({ imgURL, boxData }) =>{
-	return(
-		<div>
-			<img src={imgURL} alt="" className="img" id="rawImg" />
-			<div className="boinding-box" style={{top: boxData.topRow, right: boxData.rightCol, bottom: boxData.botRow, left: leftCol}} ></div>
-		</div>
-	);
+class Output extends Component{
+	render() {
+		return(
+			<div className="flexCenter">
+				<div className="bound-con" >
+					<img src={this.props.imgURL} alt="" className="img" id="rawImg" />
+					{this.props.div}
+				</div>	
+			</div>
+		);
+	}
 }
 
 export default Output

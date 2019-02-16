@@ -10,7 +10,7 @@ import './App.css'
 import Clarifai from 'clarifai'
 
 const app = new Clarifai.App({
- apiKey: '39ed9d27a99f4025ba8182b668b0811c'
+ apiKey: '68d9d42e06354e74aa2bb73c40fad395'
 });
 
 
@@ -20,29 +20,46 @@ class App extends Component {
     this.state = {
       input: '',
       imgURL: '',
-      boxData: {}
+      boxData: [{}],
+      div: ''
     }
   }
 
+  divCreation = (item) => {
+    const list = item.dataProcessed
+    return list.map((item, i) =>{
+      return <div key={i} className="bounding-box" style={{top: item.topRow, right: item.rightCol, bottom: item.botRow, left: item.leftCol}} ></div>
+    })
+  }
+
   calcFaceLoc = (input) => {
-    const rawData = input.outputs[0].data.regions[0].region_info.bounding_box
+    const rawData = input.outputs[0].data.regions
     const rawImg = document.getElementById('rawImg')
     const height = Number(rawImg.height)
     const width = Number(rawImg.width)
+    let dataArray = []
+    let dataProcessed = []
 
-    console.log(rawData)
+    rawData.map(item => {
+      dataArray.push(item.region_info.bounding_box)
+    })
+
+    dataArray.map(item => {
+      dataProcessed.push({ botRow: height - (item.bottom_row * height), 
+                            leftCol: width * item.left_col, 
+                            rightCol: width - (item.right_col * width),
+                            topRow: height * item.top_row
+                          })
+    })
 
     return{
-      botRow: height - (rawData.bottom_row * height),
-      leftCol: width * rawData.left_col,
-      rightCol: width - (rawData.right_col * width),
-      topRow: height * rawData.top_row
+      dataProcessed
     }    
   }
 
   displayFaceBox = (boxData) => {
-    console.log(boxData)
     this.setState({boxData: boxData})
+    this.setState({div: this.divCreation(boxData)})
   }
 
   onInputChange = (event) => {
@@ -66,7 +83,7 @@ class App extends Component {
 
         <Rank />
         <ImageForm onBtnClick={this.onBtnClick} onInputChange={this.onInputChange} />
-        <Output imgURL={this.state.imgURL} boxData={this.state.boxData} />
+        <Output imgURL={this.state.imgURL} div={this.state.div} />
         <ParticleSystem />
 
       </div>
