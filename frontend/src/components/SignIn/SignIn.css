@@ -1,0 +1,44 @@
+.signInForm{
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	flex-direction: column;
+	background-color: #222222aa;
+	border-radius: 1em;
+}
+
+.textInput{
+	height: 3em;
+	width: 30em;
+	padding: 1em;
+	border-radius: 3em;
+	border: none;
+	outline: none;
+	background-color: #ffffffaa;
+	margin: 2em;
+}
+
+.submitBtn{
+	width: 6em;
+	padding: .5em;
+	background-color: #55555500;
+	border: none;
+	color: #ffffff;
+	cursor: pointer;
+	margin: 2em;
+	background-color: #444444aa;
+	align-self: center;
+	border-radius: 1em;
+	transition: .2s;
+	text-align: center;
+	outline: none;
+}
+
+.submitBtn:hover{
+	background-color: #3399ffaa;
+}
+
+.registerBtn{
+	color: #3399ffaa;
+	cursor: pointer;
+}

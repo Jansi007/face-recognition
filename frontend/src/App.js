@@ -1,10 +1,12 @@
 import React, { Component } from 'react'
 import 'tachyons'
-import Navigation from './components/Navigation/Navigation'
+import SignOut from './components/SignOut/SignOut'
 import Logo from './components/Logo/Logo'
 import Rank from './components/Rank/Rank'
 import ImageForm from './components/ImageForm/ImageForm'
 import Output from './components/Output/Output'
+import SignIn from './components/SignIn/SignIn'
+import Register from './components/Register/Register'
 import ParticleSystem from './components/ParticleSystem/ParticleSystem'
 import './App.css'
 import Clarifai from 'clarifai'
@@ -21,7 +23,9 @@ class App extends Component {
       input: '',
       imgURL: '',
       boxData: [{}],
-      div: ''
+      div: '',
+      route: 'signIn',
+      isSignedIn: false
     }
   }
 
@@ -42,6 +46,7 @@ class App extends Component {
 
     rawData.map(item => {
       dataArray.push(item.region_info.bounding_box)
+      return null
     })
 
     dataArray.map(item => {
@@ -50,6 +55,7 @@ class App extends Component {
                             rightCol: width - (item.right_col * width),
                             topRow: height * item.top_row
                           })
+      return null
     })
 
     return{
@@ -72,22 +78,62 @@ class App extends Component {
     .then(response => this.displayFaceBox(this.calcFaceLoc(response)));
   }
 
+  onRouteChange = (prop) => {
+    if(prop === 'signOut'){
+      this.setState({isSignedIn: false})
+      prop = 'signIn'
+    }
+    if(prop === 'home'){
+      this.setState({isSignedIn: true})
+    }
+    this.setState({route: prop})
+  }
+
+  signIn = () => {
+    this.setState({isSignedIn: true})
+  }
+
   render() {
-    return (
-      <div className="App">
+    if(this.state.route === 'signIn'){
+      return  <div>
+                <div className="App">
 
-        <div className="flexSpace topCon">
-          <Logo />
-          <Navigation />
-        </div>
+                  <div className="flexSpace topCon">
+                    <Logo />
+                  </div>
 
-        <Rank />
-        <ImageForm onBtnClick={this.onBtnClick} onInputChange={this.onInputChange} />
-        <Output imgURL={this.state.imgURL} div={this.state.div} />
-        <ParticleSystem />
+                  <ParticleSystem />
+                  <SignIn onRouteChange={this.onRouteChange} />
+                </div>
+              </div>
+    }else if(this.state.route === 'register'){
+      return  <div>
+                <div className="App">
 
-      </div>
-    );
+                  <div className="flexSpace topCon">
+                    <Logo />
+                  </div>
+
+                  <ParticleSystem />
+                  <Register onRouteChange={this.onRouteChange} />
+                </div>
+              </div>
+    }else if(this.state.route === 'home'){
+      return  <div>
+                <div className="App">
+
+                  <div className="flexSpace topCon">
+                    <Logo />
+                    <SignOut onRouteChange={this.onRouteChange} />
+                  </div>
+
+                  <ParticleSystem />
+                  <Rank />
+                  <ImageForm onBtnClick={this.onBtnClick} onInputChange={this.onInputChange} />
+                  <Output imgURL={this.state.imgURL} div={this.state.div} />
+                </div>
+              </div>
+    }
   }
 }
 
