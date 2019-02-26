@@ -29,6 +29,12 @@ class App extends Component {
     }
   }
 
+  componentDidMount() {
+    fetch('http://localhost:3000/')
+      .then(res => res.json())
+      .then(console.log)
+  }
+
   divCreation = (item) => {
     const list = item.dataProcessed
     return list.map((item, i) =>{
