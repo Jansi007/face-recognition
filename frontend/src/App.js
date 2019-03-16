@@ -2,7 +2,6 @@ import React, { Component } from 'react'
 import 'tachyons'
 import SignOut from './components/SignOut/SignOut'
 import Logo from './components/Logo/Logo'
-import Rank from './components/Rank/Rank'
 import ImageForm from './components/ImageForm/ImageForm'
 import Output from './components/Output/Output'
 import SignIn from './components/SignIn/SignIn'
@@ -25,14 +24,30 @@ class App extends Component {
       boxData: [{}],
       div: '',
       route: 'signIn',
-      isSignedIn: false
+      isSignedIn: false,
+      user: {
+        id: '',
+        name: '',
+        email: '',
+        entries: 0,
+        joined: ''
+      }
     }
   }
 
+  loadUser = (data) => {
+    this.setState({
+      id: data.id,
+      name: data.name,
+      email: data.email,
+      entries: data.entries,
+      joined: data.joined
+    })
+    console.log(data)
+  }
+
   componentDidMount() {
-    fetch('http://localhost:3000/')
-      .then(res => res.json())
-      .then(console.log)
+
   }
 
   divCreation = (item) => {
@@ -121,7 +136,7 @@ class App extends Component {
                   </div>
 
                   <ParticleSystem />
-                  <Register onRouteChange={this.onRouteChange} />
+                  <Register onRouteChange={this.onRouteChange} loadUser={this.loadUser} />
                 </div>
               </div>
     }else if(this.state.route === 'home'){
@@ -134,7 +149,6 @@ class App extends Component {
                   </div>
 
                   <ParticleSystem />
-                  <Rank />
                   <ImageForm onBtnClick={this.onBtnClick} onInputChange={this.onInputChange} />
                   <Output imgURL={this.state.imgURL} div={this.state.div} />
                 </div>
